@@ -1,0 +1,16 @@
+/bin
+/include
+/lib
+/lib64
+/pyvenv.cfg
+/icg_config.json
+__pycache__
+
+# MOST IMPORTANT DO NOT EVEN DARE TO DELETE
+*.tkn
+*.tkn
+*.tkn
+*.tkn
+*.tkn
+*.tkn
+*.tkn
