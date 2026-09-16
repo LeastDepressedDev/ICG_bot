@@ -25,7 +25,7 @@ admins: set[int] = None
 
 def init():
     with open(SYS_CONFIG["tknpth"], 'r') as f:
-        SYS_CONFIG["TOKEN"] = f.read()
+        SYS_CONFIG["TOKEN"] = f.read().strip()
         do_debug_msg(f"Got token: {SYS_CONFIG['TOKEN']}")
 
 def pretty_dump(cfg: dict) -> str: return json.dumps(cfg, indent=SYS_CONFIG["json_indent"])
