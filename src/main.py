@@ -1,13 +1,9 @@
 from telegram import *
 from telegram.ext import *
 import clientworks
-import dmh
 import globals
+import events
 
-
-async def onMsg(update: tg.Update, 
-context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(f"You aare pidoras\n{update.message.text}")
 
 if __name__ == "__main__":
     globals.init()
@@ -21,7 +17,6 @@ if __name__ == "__main__":
 
     app = Application.builder().token(globals.SYS_CONFIG["TOKEN"]).build()
     clientworks.registerClientWorker(app)
-
-    app.add_handler(MessageHandler(filters.TEXT, onMsg))
+    events.init(app)
 
     app.run_polling()
