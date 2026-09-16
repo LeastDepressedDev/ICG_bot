@@ -4,6 +4,8 @@
 /lib64
 /pyvenv.cfg
 /icg_config.json
+/trackers/test_tracker.json
+
 __pycache__
 
 # MOST IMPORTANT DO NOT EVEN DARE TO DELETE

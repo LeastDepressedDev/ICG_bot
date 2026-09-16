@@ -5,6 +5,7 @@ SYS_CONFIG = {
     "debug": True,
     "tknpth": "./token.tkn",
     "global_cfg": "./icg_config.json",
+    "trackers_folder": "./trackers",
     "TOKEN": None,
     "json_indent": 4
 }
@@ -17,10 +18,12 @@ __default_global_config = {
         }
     ],
     "def_lang": "en",
-    "admin_user_ids": []
+    "admin_user_ids": [],
+    "trackers_folder": SYS_CONFIG["trackers_folder"]
 }
 
 langs: dict[str, dict[str, str]] = None
+track_paths: list[str] = []
 admins: set[int] = None
 
 def init():
@@ -62,7 +65,12 @@ def load_general_config():
             with open(f"{slg['path']}.json", 'r') as f:
                 langs[slg["name"]] = json.loads(f.read())
 
-        admins = set(cfg["admin_user_ids"])        
+        admins = set(cfg["admin_user_ids"])
+
+
+        tracks = os.listdir(cfg["trackers_folder"])
+        for track in tracks:
+            track_paths.append(f"{cfg['trackers_folder']}/{track}")
         
 
 def get_translation(lang: str, key: str) -> str:

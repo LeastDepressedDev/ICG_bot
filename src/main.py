@@ -1,8 +1,11 @@
 from telegram import *
 from telegram.ext import *
+import json
+
 import clientworks
 import globals
 import events
+import tracker
 
 
 if __name__ == "__main__":
@@ -17,6 +20,12 @@ if __name__ == "__main__":
 
     app = Application.builder().token(globals.SYS_CONFIG["TOKEN"]).build()
     clientworks.registerClientWorker(app)
+
+    for tracker_pth in globals.track_paths:
+        with open(tracker_pth, 'r') as f:
+            cfg: dict[str] = json.loads(f.read())
+            t = tracker.Tracker(cfg)
+
     events.init(app)
 
     app.run_polling()
