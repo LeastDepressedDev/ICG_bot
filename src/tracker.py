@@ -3,6 +3,8 @@ import telegram.ext as tge
 import globals
 import re
 
+# Default https pattern: .*http.{0,1}:\\/\\/.+\\..+
+
 class Tracker:
     mapper: dict[str] = {
         "*": tge.filters.ALL,
@@ -22,25 +24,37 @@ class Tracker:
         if isinstance(self.out, int):
             self.out = [self.out]
 
-        if not isinstance(self.filters, list): raise "Tracker field (filters) should be a list of strings."
+            
         self.filters = []
+        if not isinstance(self.filters, list): raise "Tracker field (filters) should be a list of strings."
         for exp in config["filters"]:
             self.filters.append(re.compile(exp))
 
-        self.iftl = 0
+        self.iftl = ~tge.filters.ALL
         for tag in config["tags"]:
             if tag in Tracker.mapper.keys():
                 self.iftl |= Tracker.mapper[tag]
             else:
                 globals.do_debug_msg(f"Invalid filter tag: {tag}. Skipping...")
 
-    
-    # TODO: Read into it and make it better
+
     @staticmethod
-    def process_input(self: Tracker, update: tg.Update, context: tge.ContextTypes.DEFAULT_TYPE):
+    def define_input_processor(tracker: Tracker):
+        async def process_input(update: tg.Update, context: tge.ContextTypes.DEFAULT_TYPE):
+            globals.do_debug_msg(f"Got message from: {update.message.chat.id}")
+            if update.message.chat.id not in tracker.inp: return
+            flag0 = True
+            for ftl in tracker.filters:
+                if ftl.fullmatch(update.message.text): flag0 = False
+            if flag0: return
+            
+            
+            globals.do_debug_msg(f"Approved: Resending to -> {', '.join([str(v) for v in tracker.out])}")
+            for oc in tracker.out:
+                await context.bot.send_message(oc, f"Imp msg:\n{update.message.text}")
         
-        pass
+        return process_input
         
 
     def register(self, app: tge.Application):
-        app.add_handler(tge.MessageHandler(self.iftl, Tracker.process_input))
+        app.add_handler(tge.MessageHandler(self.iftl, Tracker.define_input_processor(self)))

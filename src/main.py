@@ -25,6 +25,7 @@ if __name__ == "__main__":
         with open(tracker_pth, 'r') as f:
             cfg: dict[str] = json.loads(f.read())
             t = tracker.Tracker(cfg)
+            t.register(app)
 
     events.init(app)
 
