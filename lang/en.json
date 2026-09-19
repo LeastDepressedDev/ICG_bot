@@ -4,5 +4,6 @@
     "msg.permission_denied": "You are not permitted to conducted such an action.",
     "msg.internal_error": "Oopsie! Something went wrong on server side. Looks like execution failed.",
     "msg.whoami": "Your telegram id",
+    "msg.whareami": "Position chat info:\n\n\nTitle: {chat_name}\nId: {chat_id}\nType: {chat_type}",
     "msg.start": "Welcome {user}!\nThis page is under developement and the developer is not very proud of it. Some useful things will be available later but we have this disgusting, gross, awful, chaotic, diabolic, insanely stupid, bad written bot to handle tracking needs.\nYeaaaaaah..."
 }

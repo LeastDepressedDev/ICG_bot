@@ -1,13 +1,12 @@
 from telegram import *
 from telegram.ext import *
+import json
+
 import clientworks
-import dmh
 import globals
+import events
+import tracker
 
-
-async def onMsg(update: tg.Update, 
-context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(f"You aare pidoras\n{update.message.text}")
 
 if __name__ == "__main__":
     globals.init()
@@ -22,6 +21,12 @@ if __name__ == "__main__":
     app = Application.builder().token(globals.SYS_CONFIG["TOKEN"]).build()
     clientworks.registerClientWorker(app)
 
-    app.add_handler(MessageHandler(filters.TEXT, onMsg))
+    for tracker_pth in globals.track_paths:
+        with open(tracker_pth, 'r') as f:
+            cfg: dict[str] = json.loads(f.read())
+            t = tracker.Tracker(cfg)
+            t.register(app)
+
+    events.init(app)
 
     app.run_polling()
