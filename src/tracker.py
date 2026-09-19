@@ -14,9 +14,11 @@ class Tracker:
     out: list[int]|int
     inp: list[int]|int
     filters: list[re.Pattern]
+    forward: bool
 
     def __init__(self, config: dict[str]):
         self.out = config["output_channel"]
+        self.forward = config["forward"]
         self.inp = config["input_channel"]
 
         if isinstance(self.inp, int):
@@ -28,7 +30,9 @@ class Tracker:
         self.filters = []
         if not isinstance(self.filters, list): raise "Tracker field (filters) should be a list of strings."
         for exp in config["filters"]:
-            self.filters.append(re.compile(exp))
+            flags = re.RegexFlag.NOFLAG
+            if not exp["case"]: flags |= re.RegexFlag.IGNORECASE
+            self.filters.append(re.compile(exp["pattern"], flags))
 
         self.iftl = ~tge.filters.ALL
         for tag in config["tags"]:
@@ -51,7 +55,12 @@ class Tracker:
             
             globals.do_debug_msg(f"Approved: Resending to -> {', '.join([str(v) for v in tracker.out])}")
             for oc in tracker.out:
-                await context.bot.send_message(oc, f"Imp msg:\n{update.message.text}")
+                if tracker.forward:
+                    await update.message.forward(oc)
+                else:
+                    restl = globals.get_translation("en", "msg.resend_msg_response")
+                    restl = restl.replace("{user_name}", update.effective_user.name).replace("{text}", update.message.text)
+                    await context.bot.send_message(oc, restl)
         
         return process_input
         
