@@ -1,3 +1,24 @@
+"""
+Tracker json object documentation:
+
+{
+    "output_channel": [integer, ...] | integer, // Channels to resend message
+    "input_channel": [integer, ...] | integer, // Channels to track for messages
+    "forward": boolean,  // Use telegram forward instead of raw message text resend
+    "filters": [ // List of regex match filters applied on message to determin whether resend it or not
+        {
+            "case": boolean, // False if it is case irrelevant.
+            "pattern": string // regex pattern
+        },
+        ...
+    ],
+    "tags": [ // Telegram API tags to determin the message possbile type and attributes
+        "*", // All the messages will be tracked
+        "text" // Messages with text parts will be tracked
+    ]
+}
+"""
+
 import telegram as tg
 import telegram.ext as tge
 import globals
