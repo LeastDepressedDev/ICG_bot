@@ -2,6 +2,7 @@ import dmh
 import globals
 import telegram as tg
 import telegram.ext as tge
+import motivation
 
 # Reference command
 # async def start(update: Update, 
@@ -66,6 +67,9 @@ async def start(update: tg.Update, context: tge.ContextTypes.DEFAULT_TYPE):
     response = response.replace("{user}", update.effective_user.username)
     await update.message.reply_text(response)
 
+@cmd.general("inspiration")
+async def insp(update: tg.Update, context: tge.ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(motivation.get_motivational())
 
 @cmd.general("whoami", debug=True)
 async def whoami(update: tg.Update, context):

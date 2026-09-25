@@ -7,5 +7,5 @@ Run from shell
 git clone https://github.com/LeastDepressedDev/ICG_bot &&
 cd ICG_bot &&
 python -m venv . &&
-./bin/pip install python-telegram-bot
+./bin/pip install python-telegram-bot requests
 ```
