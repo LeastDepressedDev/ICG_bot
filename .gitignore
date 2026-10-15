@@ -4,7 +4,7 @@
 /lib64
 /pyvenv.cfg
 /icg_config.json
-/trackers/test_tracker.json
+/trackers
 
 __pycache__
 

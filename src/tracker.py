@@ -22,6 +22,7 @@ Tracker json object documentation:
 import telegram as tg
 import telegram.ext as tge
 import globals
+import events
 import re
 
 # Default https pattern: .*http.{0,1}:\\/\\/.+\\..+
@@ -63,28 +64,23 @@ class Tracker:
                 globals.do_debug_msg(f"Invalid filter tag: {tag}. Skipping...")
 
 
-    @staticmethod
-    def define_input_processor(tracker: Tracker):
-        async def process_input(update: tg.Update, context: tge.ContextTypes.DEFAULT_TYPE):
-            globals.do_debug_msg(f"Got message from: {update.message.chat.id}")
-            if update.message.chat.id not in tracker.inp: return
-            flag0 = True
-            for ftl in tracker.filters:
-                if ftl.fullmatch(update.message.text): flag0 = False
-            if flag0: return
-            
-            
-            globals.do_debug_msg(f"Approved: Resending to -> {', '.join([str(v) for v in tracker.out])}")
-            for oc in tracker.out:
-                if tracker.forward:
-                    await update.message.forward(oc)
-                else:
-                    restl = globals.get_translation("en", "msg.resend_msg_response")
-                    restl = restl.replace("{user_name}", update.effective_user.name).replace("{text}", update.message.text)
-                    await context.bot.send_message(oc, restl)
+    async def process_input(self, update: tg.Update, context: tge.ContextTypes.DEFAULT_TYPE):
+        globals.do_debug_msg(f"Got message from: {update.message.chat.id}")
+        if update.message.chat.id not in self.inp: return
+        flag0 = True
+        for ftl in self.filters:
+            if ftl.fullmatch(update.message.text): flag0 = False
+        if flag0: return
         
-        return process_input
         
-
-    def register(self, app: tge.Application):
-        app.add_handler(tge.MessageHandler(self.iftl, Tracker.define_input_processor(self)))
+        globals.do_debug_msg(f"Approved: Resending to -> {', '.join([str(v) for v in self.out])}")
+        for oc in self.out:
+            if self.forward:
+                await update.message.forward(oc)
+            else:
+                restl = globals.get_translation("en", "msg.resend_msg_response")
+                restl = restl.replace("{user_name}", update.effective_user.name).replace("{text}", update.message.text)
+                await context.bot.send_message(oc, restl)
+        
+    def register(self):
+        events.trackers.append(self)
