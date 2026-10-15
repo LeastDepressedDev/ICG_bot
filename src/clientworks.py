@@ -67,7 +67,7 @@ async def start(update: tg.Update, context: tge.ContextTypes.DEFAULT_TYPE):
     response = response.replace("{user}", update.effective_user.username)
     await update.message.reply_text(response)
 
-@cmd.general("inspiration")
+@cmd.general("inspiration", public=True)
 async def insp(update: tg.Update, context: tge.ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(motivation.get_motivational())
 

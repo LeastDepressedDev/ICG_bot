@@ -7,5 +7,13 @@
     "msg.whareami": "Position chat info:\n\n\nTitle: {chat_name}\nId: {chat_id}\nType: {chat_type}",
     "msg.start": "Welcome {user}!\nThis page is under developement and the developer is not very proud of it. Some useful things will be available later but we have this disgusting, gross, awful, chaotic, diabolic, insanely stupid, bad written bot to handle tracking needs.\nYeaaaaaah...",
 
-    "msg.resend_msg_response": "Resend message from {user_name}:\n{text}"
+    "msg.resend_msg_response": "Resend message from {user_name}:\n{text}",
+
+    "msg.randq.req_ingroup": "Not allowed outside groups.",
+    "msg.randq.new_queue": "Initialising new queue for this channel.",
+    "msg.randq.rolling_for": "Rolling for {amount}:\n{nterm_list}",
+    "msg.randq.null_q": "Nothing to roll!",
+    "msg.randq.noq_there": "There is no queue in this chat.",
+    "msg.randq.pushme_success": "Added you as {name}",
+    "msg.randq.pushme_fail": "You are already in queue ;("
 }

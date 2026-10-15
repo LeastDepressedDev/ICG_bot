@@ -7,7 +7,7 @@ trackers: list[tracker.Tracker] = []
 
 async def got_message(update: tg.Update, context: tge.ContextTypes.DEFAULT_TYPE):
 
-    
+
 
     # Working with trackers(Lowest prio)
     for track in trackers:
